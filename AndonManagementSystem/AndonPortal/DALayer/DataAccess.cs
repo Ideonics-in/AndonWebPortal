@@ -65,6 +65,33 @@ namespace AndonPortal.DALayer
                 return (DateTime)dt.Rows[0][0];
             return null;
         }
+
+
+         internal DateTime? GetCycleEndTs(int i)
+        {
+
+            SqlConnection localCon = new SqlConnection(conStr);
+            String qry = @"select top(1) [Timestamp] from VHTStatusTracker where VHT={0} and Status={1} order by [Timestamp] desc ";
+
+
+
+
+            localCon.Open();
+            qry = String.Format(qry, i, 9);
+
+            SqlCommand cmd = new SqlCommand(qry, localCon);
+            SqlDataReader dr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+            dt.Load(dr);
+
+            cmd.Dispose();
+            localCon.Close();
+            localCon.Dispose();
+            if(dt.Rows.Count > 0 )
+                return (DateTime)dt.Rows[0][0];
+            return null;
+        }
+    
     }
 }
 
